@@ -12,6 +12,8 @@
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -51,6 +53,27 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="OpenToolkit.Core, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\OpenToolkit.Core.4.0.0-pre3\lib\netstandard2.0\OpenToolkit.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenToolkit.Graphics, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\OpenToolkit.Graphics.4.0.0-pre3\lib\netstandard2.0\OpenToolkit.Graphics.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenToolkit.Input, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\OpenToolkit.Input.4.0.0-pre3\lib\netstandard2.0\OpenToolkit.Input.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenToolkit.Mathematics, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\OpenToolkit.Mathematics.4.0.0-pre3\lib\netstandard2.0\OpenToolkit.Mathematics.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenToolkit.Windowing.Common, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\OpenToolkit.Windowing.Common.4.0.0-pre3\lib\netstandard2.0\OpenToolkit.Windowing.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenToolkit.Windowing.Desktop, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\OpenToolkit.Windowing.Desktop.4.0.0-pre3\lib\net472\OpenToolkit.Windowing.Desktop.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenToolkit.Windowing.GraphicsLibraryFramework, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>packages\OpenToolkit.Windowing.GraphicsLibraryFramework.4.0.0-pre3\lib\net472\OpenToolkit.Windowing.GraphicsLibraryFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -72,8 +95,6 @@
     <Compile Include="ClientBase\Modules\Modules\Aimbot.cs" />
     <Compile Include="ClientBase\Modules\Modules\AirAcceleration.cs" />
     <Compile Include="ClientBase\Modules\Modules\AirJump.cs" />
-    <Compile Include="ClientBase\Modules\Modules\AntiHive.cs" />
-    <Compile Include="ClientBase\Modules\Modules\AntiSentinel.cs" />
     <Compile Include="ClientBase\Modules\Modules\AutoRespawn.cs" />
     <Compile Include="ClientBase\Modules\Modules\AutoSprint.cs" />
     <Compile Include="ClientBase\Modules\Modules\AutoSword.cs" />
@@ -179,9 +200,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Memory\VHooks\WhatsThis.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Import Project="packages\opentoolkit.redist.glfw.3.3.0-pre20190424184726\build\opentoolkit.redist.glfw.targets" Condition="Exists('packages\opentoolkit.redist.glfw.3.3.0-pre20190424184726\build\opentoolkit.redist.glfw.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\opentoolkit.redist.glfw.3.3.0-pre20190424184726\build\opentoolkit.redist.glfw.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\opentoolkit.redist.glfw.3.3.0-pre20190424184726\build\opentoolkit.redist.glfw.targets'))" />
+  </Target>
 </Project>

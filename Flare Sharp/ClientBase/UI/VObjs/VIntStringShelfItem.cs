@@ -11,13 +11,13 @@ using System.Windows.Forms;
 
 namespace Flare_Sharp.ClientBase.UI.VObjs
 {
-    public class VStringShelf : VShelfItem
+    public class VIntStringShelf : VShelfItem
     {
         public bool deleted = false;
         bool editing = false;
-        public VStringShelf() : base(24, false)
+        public VIntStringShelf() : base(24, false)
         {
-            text = "player";
+            text = "0";
         }
 
         public override void OnInteractUp(clientKeyEvent a)
@@ -32,7 +32,8 @@ namespace Flare_Sharp.ClientBase.UI.VObjs
                         text = text.Remove(text.Length - 1);
                         if (text.Length == 0)
                         {
-                            deleted = true;
+                            //deleted = true;
+                            text = "0";
                         }
                         editing = false;
                     }
@@ -50,17 +51,19 @@ namespace Flare_Sharp.ClientBase.UI.VObjs
                         text = text.Remove(text.Length - 2) + "|";
                     }
                 }
-                else if (a.key >= 0x30 && a.key <= 0x5A)
+                else if (a.key >= 0x30 && a.key <= 0x39)
                 {
                     if (editing)
                     {
                         char typed = a.key;
-                        if (!KeybindHandler.isKeyDown((char)0x10))
-                        {
-                            typed += (char)0x20;
-                        }
                         text = text.Remove(text.Length - 1) + typed + "|";
-                        
+                    }
+                } else if(a.key != 0x1 && a.key != 0x2 && a.key != 0x8)
+                {
+                    if (editing && text.Length <= 1)
+                    {
+                        char typed = '-';
+                        text = text.Remove(text.Length - 1) + typed + "|";
                     }
                 }
             }

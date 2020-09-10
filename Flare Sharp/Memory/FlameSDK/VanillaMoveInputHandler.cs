@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace Flare_Sharp.Memory.FlameSDK
 {
-    public class PlayerAttributes : SDKObj
+    public class VanillaMoveInputHandler : SDKObj
     {
-        public PlayerAttributes(ulong addr) : base(addr)
+        public VanillaMoveInputHandler(ulong addr) : base(addr)
         {
         }
 
-        public float playerSpeed
+        public byte isCrouching
         {
             get
             {
-                return MCM.readFloat(addr + 0x9C);
+                return MCM.readByte(addr + 0x48);
             }
             set
             {
-                MCM.writeFloat(addr + 0x9C, value);
+                MCM.writeByte(addr + 0x48, value);
             }
         }
     }

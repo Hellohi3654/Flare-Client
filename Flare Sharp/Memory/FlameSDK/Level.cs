@@ -20,6 +20,26 @@ namespace Flare_Sharp.Memory.FlameSDK
             }
         }
 
+        public ulong setLookingEnt
+        {
+            set
+            {
+                MCM.writeInt64(addr + 0x870, value);
+            }
+        }
+
+        public int lookingState
+        {
+            get
+            {
+                return MCM.readInt(addr + 0x850);
+            }
+            set
+            {
+                MCM.writeInt(addr + 0x850, value);
+            }
+        }
+
         public int lookingBlockSide 
         {
             get
@@ -65,11 +85,37 @@ namespace Flare_Sharp.Memory.FlameSDK
             }
         }
 
-        public FirstPersonLookBehavior firstPersonCamera
+        public List<Mob> getMovingEntities
         {
             get
             {
-                return new FirstPersonLookBehavior(MCM.evaluatePointer(addr, MCM.ceByte2uLong("60 38 0")));
+                List<Mob> Entities = new List<Mob>();
+                ulong startList = MCM.readInt64(addr + 0x40);
+                ulong endList = MCM.readInt64(addr + 0x48);
+                for (ulong ent = startList; ent < endList; ent += 0x8)
+                {
+                    if (ent == startList) continue;
+                    Mob entObj = new Mob(MCM.readInt64(ent));
+                    if (entObj.movedTick > 1) Entities.Add(entObj);
+                }
+                return Entities;
+            }
+        }
+
+        public List<Mob> getAllEntities
+        {
+            get
+            {
+                List<Mob> Entities = new List<Mob>();
+                ulong startList = MCM.readInt64(addr + 0x40);
+                ulong endList = MCM.readInt64(addr + 0x48);
+                for (ulong ent = startList; ent < endList; ent += 0x8)
+                {
+                    if (ent == startList) continue;
+                    Mob entObj = new Mob(MCM.readInt64(ent));
+                    Entities.Add(entObj);
+                }
+                return Entities;
             }
         }
 

@@ -27,13 +27,28 @@ namespace Flare_Sharp.ClientBase.Modules
             this.keybind = keybind;
             this.enabled = enabled;
             category.modules.Add(this);
+            bool succ = false;
         }
 
         public List<SliderSetting> sliderSettings = new List<SliderSetting>();
+
+        public List<SliderFloatSetting> sliderFloatSettings = new List<SliderFloatSetting>();
         public void RegisterSliderSetting(string text, int min, int value, int max)
         {
             sliderSettings.Add(new SliderSetting(text, min, value, max));
         }
+
+        public void RegisterFloatSliderSetting(string text, float min, float value, float max)
+        {
+            sliderFloatSettings.Add(new SliderFloatSetting(text, min, value, max));
+        }
+
+        public List<ToggleSetting> toggleSettings = new List<ToggleSetting>();
+        public void RegisterToggleSetting(string text, bool value)
+        {
+            toggleSettings.Add(new ToggleSetting(text, value));
+        }
+
         public void startTimer(int millis)
         {
             Timer timer = new Timer();
@@ -84,7 +99,7 @@ namespace Flare_Sharp.ClientBase.Modules
                     onEnable();
                     try
                     {
-                        if(toggleEvent!=null)
+                        if (toggleEvent!=null)
                             toggleEvent.Invoke(this, new EventArgs());
                     }
                     catch (Exception) { }

@@ -10,36 +10,22 @@ namespace Flare_Sharp.ClientBase.Modules.Modules
     {
         public Aimbot() : base("Aimbot", CategoryHandler.registry.categories[0], (char)0x07, false)
         {
-            RegisterSliderSetting("Range", 0, 120, 500);
+            RegisterFloatSliderSetting("Range", 0f, 12.0f, 50.0f);
         }
+
 
         public override void onTick()
         {
             base.onTick();
-            List<Mob> Entity = Minecraft.clientInstance.localPlayer.entityRegistry.targetableEntities;
-            List<double> distancesArr = new List<double>();
 
-            foreach(Mob e in Entity)
+            Mob closestEnt = Utils.getClosestEntity(Minecraft.clientInstance.localPlayer.level.getMovingEntities);
+
+            if (closestEnt.username.Length > 0)
             {
-                Double distance = e.distanceTo(Minecraft.clientInstance.localPlayer);
-                if (distance <= sliderSettings[0].value / 10F) distancesArr.Add(distance);
-            }
+                Utils.Vec2f anglesArr = Utils.getCalculationsToPos(Minecraft.clientInstance.localPlayer.location, closestEnt.location);
 
-            if(distancesArr.Count() > 0)
-            {
-                distancesArr.Sort();
-
-                foreach(Mob e in Entity)
-                {
-                    if(e.distanceTo(Minecraft.clientInstance.localPlayer) == distancesArr[0])
-                    {
-                        Utils.Vec3f localPosition = Minecraft.clientInstance.localPlayer.location;
-                        Utils.Vec3f targetPosition = e.location;
-                        Utils.Vec2f calculationsArr = Utils.getCalculationsToPos(localPosition, targetPosition);
-                        Minecraft.clientInstance.localPlayer.level.firstPersonCamera.cameraPitch = calculationsArr.x;
-                        Minecraft.clientInstance.localPlayer.level.firstPersonCamera.cameraYaw = calculationsArr.y;
-                    }
-                }
+                Minecraft.clientInstance.firstPersonLookBehavior.cameraPitch = anglesArr.x;
+                Minecraft.clientInstance.firstPersonLookBehavior.cameraYaw = anglesArr.y;
             }
         }
     }

@@ -13,31 +13,50 @@ namespace Flare_Sharp.ClientBase.Modules.Modules
         byte savedFlightState;
         public Freecam() : base("Freecam", CategoryHandler.registry.categories[3], (char)0x07, false)
         {
+            RegisterToggleSetting("Revert State", true);
         }
 
         public override void onEnable()
         {
             base.onEnable();
             savedCoordinates.Add(Minecraft.clientInstance.localPlayer.currentX1);
-            savedCoordinates.Add((float)Math.Floor(Minecraft.clientInstance.localPlayer.currentY1 - 1));
+            savedCoordinates.Add((float)Math.Floor(Minecraft.clientInstance.localPlayer.currentY1));
             savedCoordinates.Add(Minecraft.clientInstance.localPlayer.currentZ1);
-            savedPitchAndYaw.Add(Minecraft.clientInstance.localPlayer.level.firstPersonCamera.cameraPitch);
-            savedPitchAndYaw.Add(Minecraft.clientInstance.localPlayer.level.firstPersonCamera.cameraYaw);
+            savedPitchAndYaw.Add(Minecraft.clientInstance.firstPersonLookBehavior.cameraPitch);
+            savedPitchAndYaw.Add(Minecraft.clientInstance.firstPersonLookBehavior.cameraYaw);
             savedFlightState = Minecraft.clientInstance.localPlayer.isFlying;
             byte[] write = { 0x90, 0x90, 0x90 };
             MCM.writeBaseBytes(Statics.movementPacket, write);
         }
+
         public override void onDisable()
         {
             base.onDisable();
-            Minecraft.clientInstance.localPlayer.teleport(savedCoordinates[0], savedCoordinates[1], savedCoordinates[2]);
-            Minecraft.clientInstance.localPlayer.level.firstPersonCamera.cameraPitch = savedPitchAndYaw[0];
-            Minecraft.clientInstance.localPlayer.level.firstPersonCamera.cameraYaw = savedPitchAndYaw[1];
-            Minecraft.clientInstance.localPlayer.isFlying = savedFlightState;
-            savedCoordinates.Clear();
-            savedPitchAndYaw.Clear();
-            byte[] write = { 0xFF, 0x50, 0x08 };
-            MCM.writeBaseBytes(Statics.movementPacket, write);
+
+            if (toggleSettings[0].value)
+            {
+                Minecraft.clientInstance.localPlayer.teleport(savedCoordinates[0], savedCoordinates[1], savedCoordinates[2]);
+                Minecraft.clientInstance.firstPersonLookBehavior.cameraPitch = savedPitchAndYaw[0];
+                Minecraft.clientInstance.firstPersonLookBehavior.cameraYaw = savedPitchAndYaw[1];
+                Minecraft.clientInstance.localPlayer.isFlying = savedFlightState;
+                savedCoordinates.Clear();
+                savedPitchAndYaw.Clear();
+                byte[] write = { 0xFF, 0x50, 0x08 };
+                MCM.writeBaseBytes(Statics.movementPacket, write);
+            } else
+            {
+                savedCoordinates.Clear();
+                savedPitchAndYaw.Clear();
+                byte[] write = { 0xFF, 0x50, 0x08 };
+                MCM.writeBaseBytes(Statics.movementPacket, write);
+            }
+        }
+
+        public override void onTick()
+        {
+            base.onTick();
+            Minecraft.clientInstance.localPlayer.isFlying = 1;
+            Minecraft.clientInstance.localPlayer.Y2 = Minecraft.clientInstance.localPlayer.Y1;
         }
     }
 }

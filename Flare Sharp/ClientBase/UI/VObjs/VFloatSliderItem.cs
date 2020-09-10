@@ -11,21 +11,22 @@ using System.Windows.Forms;
 
 namespace Flare_Sharp.ClientBase.UI.VObjs
 {
-    public class VSliderItem : VSubShelfItem
+    public class VFloatSliderItem : VSubShelfItem
     {
-        public int minimum;
-        public virtual int value
+        public float minimum;
+        public virtual float value
         {
-            get;set;
+            get; set;
         }
-        public int maximum;
+        public float maximum;
         bool dragging = false;
 
-        int total
+        float total
         {
             get
             {
                 return Math.Abs(minimum) + Math.Abs(maximum);
+                //return minimum + maximum;
             }
         }
         float incBy
@@ -36,13 +37,13 @@ namespace Flare_Sharp.ClientBase.UI.VObjs
             }
         }
         List<RectangleF> increments = new List<RectangleF>();
-        public VSliderItem(string name, int minimum, int value, int maximum, VShelfItem parent) : base(24, false, parent)
+        public VFloatSliderItem(string name, float minimum, float value, float maximum, VShelfItem parent) : base(24, false, parent)
         {
             this.text = name;
             this.minimum = minimum;
             this.value = value;
             this.maximum = maximum;
-            for(int i =0; i< total+1; i++)
+            for (int i = 0; i < total + 1; i++)
             {
                 increments.Add(new RectangleF(x + (i * incBy), 0, incBy, height));
             }
@@ -51,17 +52,21 @@ namespace Flare_Sharp.ClientBase.UI.VObjs
         public override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            for (int i = 0; i < total+1; i++)
+            for (int i = 0; i < total + 1; i++)
             {
                 RectangleF drawn = increments[i];
                 drawn.X = x + (i * incBy);
                 drawn.Y = y;
                 increments[i] = drawn;
-                if (i <= value+ Math.Abs(minimum)-1)
+                if (i <= value + Math.Abs(minimum) - 1)
                 {
                     e.Graphics.FillRectangle(tertiary, drawn);
                 }
             }
+            if (value < minimum)
+            {
+                value = minimum;
+            } else if(value > maximum) value = maximum;
             e.Graphics.DrawString(value.ToString(), font, primary, x + width - (font.Size * value.ToString().Length), y);
             e.Graphics.DrawString(text, font, primary, x, y);
         }

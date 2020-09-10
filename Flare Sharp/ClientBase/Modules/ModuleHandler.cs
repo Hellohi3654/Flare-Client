@@ -31,6 +31,7 @@ namespace Flare_Sharp.ClientBase.Modules
             */
             Console.WriteLine("Starting module register...");
             /* Register modules here */
+            new Killaura();
             new Aimbot();
             new Hitbox();
             new Triggerbot();
@@ -38,8 +39,7 @@ namespace Flare_Sharp.ClientBase.Modules
             new Criticals();
             new Misplace();
             new Reach();
-            new RapidAttack();
-            new AutoSword();
+            new RapidClick();
             new AirJump();
             new Glide();
             new HighJump();
@@ -51,7 +51,6 @@ namespace Flare_Sharp.ClientBase.Modules
             new NoSlowDown();
             new NoKnockBack();
             new NoWeb();
-            new Step();
             new FastLadder();
             new AirAcceleration();
             new Velocity();
@@ -59,6 +58,7 @@ namespace Flare_Sharp.ClientBase.Modules
             new YBoost();
             new Coordinates();
             new InventoryMove();
+            new AutoWalk();
             new Flight();
             new BounceFly();
             new JitterFlight();
@@ -73,6 +73,9 @@ namespace Flare_Sharp.ClientBase.Modules
             new Instabreak();
             new AutoRespawn();
             new Recall();
+            new FOV();
+            new AutoCrouch();
+            new LagSpoof();
             new NoPacket(); //42
             new Freecam();
             new NoShadow();
@@ -83,9 +86,10 @@ namespace Flare_Sharp.ClientBase.Modules
             new TPFlight();
             //new ListTest();
             //new AntiSentinel();
-            //new AntiHive();
             new CpuLimiter();
             new RainbowUI();
+            new CoordinatesDisplay();
+            //new CubeCraftFly();
             Console.WriteLine("Modules registered!");
             startModuleThread();
         }

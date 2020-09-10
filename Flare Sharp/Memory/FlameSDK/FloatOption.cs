@@ -6,21 +6,21 @@ using System.Threading.Tasks;
 
 namespace Flare_Sharp.Memory.FlameSDK
 {
-    public class AttributeInstance : SDKObj
+    public class FloatOption : SDKObj
     {
-        public AttributeInstance(ulong addr) : base(addr)
+        public FloatOption(ulong addr) : base(addr)
         {
         }
 
-        public float value
+        public float playerFOV
         {
             get
             {
-                return MCM.readFloat(addr + 0x9C);
+                return MCM.readFloat(addr + 0xF0);
             }
             set
             {
-                MCM.writeFloat(addr + 0x9C, value);
+                MCM.writeFloat(addr + 0xF0, value);
             }
         }
     }
